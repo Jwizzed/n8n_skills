@@ -1,0 +1,12 @@
+{
+  "mcpServers": {
+    "n8n": {
+      "command": "/Users/krittinsetdhavanich/Documents/n8n/n8n-mcp-local.sh",
+      "args": [],
+      "env": {
+        "N8N_API_URL": "http://localhost:5678/api/v1",
+        "N8N_API_KEY": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIzYmVjYjVjYi1kYjBkLTRmMjgtODVjMy1lODQyMzQ1YzMxYzIiLCJpc3MiOiJuOG4iLCJhdWQiOiJwdWJsaWMtYXBpIiwianRpIjoiNDk3MzI1YzUtYmFmOS00NzA2LWJiNGItOWE1MzI0ZmFlNDZlIiwiaWF0IjoxNzc3NzE2NzM3fQ.1XasMP_3nh7LCYrsbngb8NACZ8ahP3c9Udwsh-EL0Dc"
+      }
+    }
+  }
+}

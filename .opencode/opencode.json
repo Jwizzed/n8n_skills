@@ -1,0 +1,9 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mcp": {
+    "n8n": {
+      "type": "local",
+      "command": ["bash", "/Users/krittinsetdhavanich/Documents/n8n/n8n-mcp-local.sh"]
+    }
+  }
+}

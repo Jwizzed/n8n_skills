@@ -1,0 +1,224 @@
+{
+  "name": "The_Krit_Tech_Content_Factory",
+  "nodes": [
+    {
+      "id": "node-1-form-trigger",
+      "name": "n8n Form Trigger",
+      "type": "n8n-nodes-base.formTrigger",
+      "typeVersion": 2,
+      "position": [0, 300],
+      "parameters": {
+        "formTitle": "Content Input",
+        "formFields": {
+          "values": [
+            {
+              "fieldLabel": "Pillar",
+              "fieldType": "dropdown",
+              "optionsList": {
+                "values": [
+                  { "name": "Curiosity Detour", "value": "Curiosity Detour" },
+                  { "name": "Low-Level Insight", "value": "Low-Level Insight" },
+                  { "name": "Brutalist Review", "value": "Brutalist Review" }
+                ]
+              }
+            },
+            {
+              "fieldLabel": "Topic_Seed",
+              "fieldType": "string"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-2-sheets-lookup",
+      "name": "Deduplication Check",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [200, 300],
+      "parameters": {
+        "operation": "lookup",
+        "lookupColumn": "Topic",
+        "lookupValue": "={{ $json.Topic_Seed }}"
+      }
+    },
+    {
+      "id": "node-3-if-dedup",
+      "name": "If Node Logic",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [400, 300],
+      "parameters": {
+        "conditions": {
+          "boolean": [
+            { "value1": "={{ $json.found }}", "value2": true }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-4-mindset-injector",
+      "name": "Mindset Injector",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [600, 400],
+      "parameters": {
+        "jsCode": "const pillar = $input.item.json.Pillar;\nconst seed = $input.item.json.Topic_Seed || 'the latest high-value AI automation trend for SMEs';\nlet mindset = '';\n\nif (pillar === 'Curiosity Detour') {\n  mindset = `Analyze: ${seed}. Search for debates, hidden inefficiencies, and 'Manual Debt'. Find concrete evidence of why the popular approach is failing and what the architectural fix is.`;\n} else if (pillar === 'Low-Level Insight') {\n  mindset = `Analyze: ${seed}. Search for deep technical documentation, whitepapers, and architectural mechanics. Focus on how it works under the hood.`;\n} else if (pillar === 'Brutalist Review') {\n  mindset = `Analyze: ${seed}. Search for technical limitations, self-hosting requirements, Docker setups, and data sovereignty aspects.`;\n}\n\nreturn {\n  topic: seed,\n  pillar: pillar,\n  perplexity_prompt: mindset\n};"
+      }
+    },
+    {
+      "id": "node-5-perplexity",
+      "name": "Perplexity API",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [800, 400],
+      "parameters": {
+        "method": "POST",
+        "url": "https://api.perplexity.ai/chat/completions",
+        "sendBody": true,
+        "jsonBody": "={\n  \"model\": \"sonar-reasoning\",\n  \"messages\": [\n    { \"role\": \"system\", \"content\": \"You are a technical research assistant. Return your findings as a structured JSON object containing 'insight', 'technical_terms', and an array of 'media_urls' (links to architecture diagrams or reference images if found).\" },\n    { \"role\": \"user\", \"content\": \"{{ $json.perplexity_prompt }}\" }\n  ]\n}"
+      }
+    },
+    {
+      "id": "node-6-binary-processing",
+      "name": "Binary Processing",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1000, 400],
+      "parameters": {
+        "url": "={{ $json.media_urls[0] }}",
+        "responseFormat": "file"
+      }
+    },
+    {
+      "id": "node-7-drive-folder",
+      "name": "Drive Create Folder",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1200, 400],
+      "parameters": {
+        "operation": "folderCreate",
+        "name": "={{ $now.format('yyyy-MM-dd') }} - {{ $('Mindset Injector').item.json.topic }}"
+      }
+    },
+    {
+      "id": "node-8-drive-upload",
+      "name": "Drive Upload File",
+      "type": "n8n-nodes-base.googleDrive",
+      "typeVersion": 3,
+      "position": [1400, 400],
+      "parameters": {
+        "operation": "upload",
+        "fileContent": "data",
+        "parents": ["={{ $json.id }}"]
+      }
+    },
+    {
+      "id": "node-9-switch",
+      "name": "Switch Routing",
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 1,
+      "position": [1600, 400],
+      "parameters": {
+        "dataType": "string",
+        "value1": "={{ $('Mindset Injector').item.json.pillar }}",
+        "rules": {
+          "rules": [
+            { "operation": "equal", "value2": "Curiosity Detour" },
+            { "operation": "equal", "value2": "Low-Level Insight" },
+            { "operation": "equal", "value2": "Brutalist Review" }
+          ]
+        }
+      }
+    },
+    {
+      "id": "node-10-gemini",
+      "name": "Gemini Writer Nodes",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4,
+      "position": [1800, 400],
+      "parameters": {
+        "common_instructions": "You are the Architect behind Krit.Tech. Write a 240-word video script strictly following the 10-15-40-20-15 timing structure...",
+        "jsonBody": "={ \"prompt\": \"{{ $('Perplexity API').item.json.insight }}\" }"
+      }
+    },
+    {
+      "id": "node-11-sheets-add",
+      "name": "Production Queue",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4,
+      "position": [2000, 400],
+      "parameters": {
+        "operation": "append",
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Date": "={{ $now.format('yyyy-MM-dd') }}",
+            "Pillar": "={{ $('Mindset Injector').item.json.pillar }}",
+            "Topic": "={{ $('Mindset Injector').item.json.topic }}",
+            "Script": "={{ $json.Hook }} \\n {{ $json.Pivot }} \\n {{ $json.Deep_Insight }} \\n {{ $json.Sovereignty }} \\n {{ $json.CTA }}",
+            "Overlays": "={{ $json.Monospace_Overlays }}",
+            "Posting_Time": "17:15",
+            "Drive_Link": "={{ $('Drive Create Folder').item.json.webViewLink }}",
+            "Status": "Ready to Shoot"
+          }
+        }
+      }
+    }
+  ],
+  "connections": {
+    "n8n Form Trigger": {
+      "main": [
+        [ { "node": "Deduplication Check", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Deduplication Check": {
+      "main": [
+        [ { "node": "If Node Logic", "type": "main", "index": 0 } ]
+      ]
+    },
+    "If Node Logic": {
+      "main": [
+        [],
+        [ { "node": "Mindset Injector", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Mindset Injector": {
+      "main": [
+        [ { "node": "Perplexity API", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Perplexity API": {
+      "main": [
+        [ { "node": "Binary Processing", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Binary Processing": {
+      "main": [
+        [ { "node": "Drive Create Folder", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Drive Create Folder": {
+      "main": [
+        [ { "node": "Drive Upload File", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Drive Upload File": {
+      "main": [
+        [ { "node": "Switch Routing", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Switch Routing": {
+      "main": [
+        [ { "node": "Gemini Writer Nodes", "type": "main", "index": 0 } ],
+        [ { "node": "Gemini Writer Nodes", "type": "main", "index": 0 } ],
+        [ { "node": "Gemini Writer Nodes", "type": "main", "index": 0 } ]
+      ]
+    },
+    "Gemini Writer Nodes": {
+      "main": [
+        [ { "node": "Production Queue", "type": "main", "index": 0 } ]
+      ]
+    }
+  }
+}
