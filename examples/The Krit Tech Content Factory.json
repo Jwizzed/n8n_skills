@@ -257,9 +257,15 @@
         "value1": "={{ $('Mindset Injector').item.json.pillar }}",
         "rules": {
           "rules": [
-            {},
-            {},
-            {}
+            {
+              "value2": "Curiosity Detour"
+            },
+            {
+              "value2": "Low-Level Insight"
+            },
+            {
+              "value2": "Brutalist Review"
+            }
           ]
         }
       },
@@ -280,7 +286,7 @@
         "nodeCredentialType": "openRouterApi",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'anthropic/claude-sonnet-4.6', messages: [{ role: 'system', content: 'You are a TikTok scriptwriter for Curiosity Detour content. Your voice is provocative, counter-intuitive, and intellectually teasing. You expose hidden inefficiencies and Manual Debt in popular approaches. You write like a friend sharing a secret the industry hides. Rules: 60 seconds max. Punchy lowercase text-speak. No emojis. Include [PAUSE] and [ZOOM] markers. Output ONLY valid JSON with fields: script (string), overlays (array of 3-5 monospace text strings). No markdown code blocks.' }, { role: 'user', content: 'Research: ' + $json.choices[0].message.content + '\\n\\nTopic: ' + $('Mindset Injector').item.json.topic + '\\n\\nWrite a 60-second TikTok script for the ' + $('Mindset Injector').item.json.pillar + ' pillar. Follow your system persona exactly. Output ONLY valid JSON with fields: script (string, include [PAUSE] and [ZOOM] markers), overlays (array of 3-5 monospace text overlays). No markdown code blocks. No text outside the JSON.' }] }) }}",
+        "jsonBody": "={{ JSON.stringify({\n  model: 'moonshotai/kimi-k2.6',\n  messages: [\n    {\n      role: 'system',\n      content: 'You are Krit.Tech. You are an engineer explaining \"Under the Hood\" AI mechanics to a peer. Your tone is \"Deep Insight\"—technical but grounded. Use a Phonetic Mix: Thai narrative with English technical terms (RAG, Vector Embeddings, MRR) as SEO anchors. Never say \"It supports RAG\"; say \"AI จะเลิกมโน เพราะมันเปิดหนังสือตอบคุณทุกครั้ง.\" Target length: 230–260 words. Structure: [0:00-0:05] Hook (Truth focus), [0:05-0:20] Concept (Analogy), [0:20-0:55] Deep Insight (use Recall@K/MRR benchmarks), [0:55-1:25] Why it matters (Privacy/Sovereignty), [1:25-1:40] Conclusion (Call for tech questions). Output ONLY valid JSON with fields: script (string), overlays (array of 3-5 strings). No markdown code blocks.'\n    },\n    {\n      role: 'user',\n      content: 'Research: ' + $json.choices[0].message.content + '\\n\\nTopic: ' + $('Mindset Injector').item.json.topic + '\\n\\nWrite the script following your DNA exactly. Use the research data to explain why systems fail silently. No markdown code blocks. No text outside the JSON.'\n    }\n  ]\n}) }}",
         "options": {
           "response": {
             "response": {
@@ -312,7 +318,7 @@
         "nodeCredentialType": "openRouterApi",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'anthropic/claude-sonnet-4.6', messages: [{ role: 'system', content: 'You are a TikTok scriptwriter for Low-Level Insight content. Your voice is technical, precise, and educational. You break down complex systems into digestible mechanical explanations. Show how it works under the hood with specific technical details. Rules: 60 seconds max. Punchy lowercase text-speak. No emojis. Include [PAUSE] and [ZOOM] markers. Output ONLY valid JSON with fields: script (string), overlays (array of 3-5 monospace text strings). No markdown code blocks.' }, { role: 'user', content: 'Research: ' + $json.choices[0].message.content + '\\n\\nTopic: ' + $('Mindset Injector').item.json.topic + '\\n\\nWrite a 60-second TikTok script for the ' + $('Mindset Injector').item.json.pillar + ' pillar. Follow your system persona exactly. Output ONLY valid JSON with fields: script (string, include [PAUSE] and [ZOOM] markers), overlays (array of 3-5 monospace text overlays). No markdown code blocks. No text outside the JSON.' }] }) }}",
+        "jsonBody": "={{ JSON.stringify({ model: 'moonshotai/kimi-k2.6', messages: [{ role: 'system', content: 'You are a TikTok scriptwriter for Low-Level Insight content. Your voice is technical, precise, and educational. You break down complex systems into digestible mechanical explanations. Show how it works under the hood with specific technical details. Rules: 60 seconds max. Punchy lowercase text-speak. No emojis. Include [PAUSE] and [ZOOM] markers. Output ONLY valid JSON with fields: script (string), overlays (array of 3-5 monospace text strings). No markdown code blocks.' }, { role: 'user', content: 'Research: ' + $json.choices[0].message.content + '\\n\\nTopic: ' + $('Mindset Injector').item.json.topic + '\\n\\nWrite a 60-second TikTok script for the ' + $('Mindset Injector').item.json.pillar + ' pillar. Follow your system persona exactly. Output ONLY valid JSON with fields: script (string, include [PAUSE] and [ZOOM] markers), overlays (array of 3-5 monospace text overlays). No markdown code blocks. No text outside the JSON.' }] }) }}",
         "options": {
           "response": {
             "response": {
@@ -344,7 +350,7 @@
         "nodeCredentialType": "openRouterApi",
         "sendBody": true,
         "specifyBody": "json",
-        "jsonBody": "={{ JSON.stringify({ model: 'anthropic/claude-sonnet-4.6', messages: [{ role: 'system', content: 'You are a TikTok scriptwriter for Brutalist Review content. Your voice is raw, unfiltered, and brutally honest. You tested tools for 30 days and report the ugly truth. Focus on self-hosting pain, Docker complexity, data sovereignty, hidden costs. No sugarcoating. Rules: 60 seconds max. Punchy lowercase text-speak. No emojis. Include [PAUSE] and [ZOOM] markers. Output ONLY valid JSON with fields: script (string), overlays (array of 3-5 monospace text strings). No markdown code blocks.' }, { role: 'user', content: 'Research: ' + $json.choices[0].message.content + '\\n\\nTopic: ' + $('Mindset Injector').item.json.topic + '\\n\\nWrite a 60-second TikTok script for the ' + $('Mindset Injector').item.json.pillar + ' pillar. Follow your system persona exactly. Output ONLY valid JSON with fields: script (string, include [PAUSE] and [ZOOM] markers), overlays (array of 3-5 monospace text overlays). No markdown code blocks. No text outside the JSON.' }] }) }}",
+        "jsonBody": "={{ JSON.stringify({\n  model: 'moonshotai/kimi-k2.6',\n  messages: [\n    {\n      role: 'system',\n      content: 'Act as Krit.Tech. Your persona is a \"Brutalist Critic.\" You value \"Technical Sovereignty\" (owning your system) above everything else. You are skeptical of cloud dependencies. Your voice is raw, unfiltered, and honest. Use \"Workhorse\" energy. No superlatives or marketing fluff. If it phones home to a cloud server, call it out. Output ONLY valid JSON with fields: script (string), overlays (array of 3-5 monospace text strings). No markdown code blocks or text outside the JSON.'\n    },\n    {\n      role: 'user',\n      content: 'Research: ' + $json.choices[0].message.content + '\\n\\nTopic: ' + $('Mindset Injector').item.json.topic + '\\n\\nWrite a TikTok script (230–260 words) for the ' + $('Mindset Injector').item.json.pillar + ' pillar. \\n\\nScripting DNA:\\n1. Brutalist Tone: No \"Game-changer.\" Just \"Workhorse.\"\\n2. Sovereignty First: Focus on 100% offline/Air-gapped capability.\\n3. Value over Features: Use \"ต่อได้ทุกอย่างกับทุกอย่าง\" for APIs/connectivity.\\n\\nScript Format (Target 230–260 words):\\n- [0:00-0:05] Hook: \"[Tool Name] คือเครื่องมือที่จะเปลี่ยนธุรกิจคุณเป็น Automation Powerhouse... โดยที่ข้อมูลยังเป็นของคุณ 100%.\"\\n- [0:05-0:20] The \"Why\": Explain Technical Sovereignty (ไม่จำต้องง้อใคร ไม่ต้องฝากข้อมูลไว้กับใคร).\\n- [0:20-0:55] Deep Insight: Review telemetry/dependencies. Does it pass the \"Dark Site\" test?\\n- [0:55-1:20] The Power: Focus on \"Fixed Cost\" logic (กี่หมื่นกี่แสนครั้ง ค่าใช้จ่ายก็เท่าเดิม).\\n- [1:20-1:40] Verdict: Final recommendation. Ask to type keyword \"SELFHOST\" for the guide.\\n\\nOutput ONLY valid JSON.'\n    }\n  ]\n}) }}",
         "options": {
           "response": {
             "response": {
@@ -482,7 +488,21 @@
       ]
     }
   ],
-  "pinData": {},
+  "pinData": {
+    "n8n Form Trigger": [
+      {
+        "json": {
+          "Pillar": "Curiosity Detour",
+          "Topic_Seed": "",
+          "submittedAt": "2026-05-05T16:55:43.432+07:00",
+          "formMode": "test"
+        },
+        "pairedItem": {
+          "item": 0
+        }
+      }
+    ]
+  },
   "connections": {
     "n8n Form Trigger": {
       "main": [
@@ -660,6 +680,11 @@
             "node": "Extract Media",
             "type": "main",
             "index": 0
+          },
+          {
+            "node": "Switch Routing",
+            "type": "main",
+            "index": 0
           }
         ]
       ]
@@ -692,7 +717,7 @@
     "executionOrder": "v1",
     "binaryMode": "separate"
   },
-  "versionId": "5ccde613-9896-4bb2-8ab4-b294f3a5faea",
+  "versionId": "5e5f3e51-8e09-4218-b7c6-01da16911a2b",
   "meta": {
     "templateCredsSetupCompleted": true,
     "instanceId": "adb9e103287c675044baef1194bc22b20ad04ebffcfda7e766066e9f5463ee04"
